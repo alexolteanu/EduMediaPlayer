@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.edu.edumediaplayer.fileselection.FileSelectionScreen;
+import com.edu.edumediaplayer.playback.PlaybackScreen;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +32,11 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+    }
+
+    public void playSong(String path) {
+        mViewPager.setCurrentItem(1);
+        playbackScreen.playSong(path);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

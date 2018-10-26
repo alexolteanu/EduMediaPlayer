@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.edu.edumediaplayer.MainActivity;
 import com.edu.edumediaplayer.R;
 
 public class FileSelectionScreen extends ListFragment {
@@ -35,6 +36,6 @@ public class FileSelectionScreen extends ListFragment {
     public void onListItemClick(ListView parent, View view, int position, long id) {
         FileListItem item = (FileListItem)(parent.getItemAtPosition(position));
         if (!fileListAdapter.itemClicked(item))
-            Toast.makeText(getActivity(), "Selected "+item.getPath(), Toast.LENGTH_SHORT).show();
+            ((MainActivity)getActivity()).playSong(item.getPath());
     }
 }
