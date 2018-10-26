@@ -55,6 +55,8 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
         TextView textView = (TextView) rowView.findViewById(R.id.label);
         textView.setText(values.get(position).getLabel());
 
+        rowView.setBackgroundColor(context.getResources().getColor(values.get(position).getColor()));
+
         return rowView;
     }
 

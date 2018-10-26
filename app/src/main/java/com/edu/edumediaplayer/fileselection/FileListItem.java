@@ -22,6 +22,8 @@ public class FileListItem implements Comparable<FileListItem> {
         return path;
     }
 
+    public int getColor() { return ColorCoding.getColor(new File(path).isDirectory());}
+
     @Override
     public int compareTo(@NonNull FileListItem o) {
         int isDir = new File(path).isDirectory() ? 0 : 1;
