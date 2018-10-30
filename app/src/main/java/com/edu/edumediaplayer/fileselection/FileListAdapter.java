@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.edu.edumediaplayer.FavoritesManager;
 import com.edu.edumediaplayer.R;
 
 import java.io.File;
@@ -56,6 +58,9 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
         textView.setText(values.get(position).getLabel());
 
         rowView.setBackgroundColor(context.getResources().getColor(values.get(position).getColor()));
+
+        ImageView star = rowView.findViewById(R.id.star);
+        star.setVisibility(FavoritesManager.isStarShown(values.get(position))?View.VISIBLE:View.INVISIBLE);
 
         return rowView;
     }

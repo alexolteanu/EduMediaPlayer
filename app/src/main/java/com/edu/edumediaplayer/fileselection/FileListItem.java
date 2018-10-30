@@ -32,4 +32,8 @@ public class FileListItem implements Comparable<FileListItem> {
             return label.compareTo(o.label);
         return isDir-oIsDir;
     }
+
+    public boolean isDirectory() {
+        return new File(path).isDirectory();
+    }
 }
