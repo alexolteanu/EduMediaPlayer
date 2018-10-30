@@ -30,6 +30,7 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
     private final FileSystemReader reader;
     private FileListItem selection;
     private String crtPath;
+    private final FavoritesManager favmgr;
 
 
     public FileListAdapter(Activity activity) {
@@ -38,6 +39,7 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
 
         transformer = new FileToListTransformer();
         reader = new FileSystemReader(activity);
+        favmgr = new FavoritesManager(activity);
 
         startWithHomeFolder();
     }
@@ -60,7 +62,8 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
         rowView.setBackgroundColor(context.getResources().getColor(values.get(position).getColor()));
 
         ImageView star = rowView.findViewById(R.id.star);
-        star.setVisibility(FavoritesManager.isStarShown(values.get(position))?View.VISIBLE:View.INVISIBLE);
+        star.setVisibility(favmgr.isStarShown(values.get(position))?View.VISIBLE:View.INVISIBLE);
+        star.setImageResource(favmgr.isFavorite(values.get(position).getPath())?android.R.drawable.star_big_on:android.R.drawable.star_big_off);
 
         return rowView;
     }

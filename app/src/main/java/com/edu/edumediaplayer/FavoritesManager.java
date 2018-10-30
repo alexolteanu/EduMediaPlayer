@@ -16,7 +16,7 @@ public class FavoritesManager {
         editor = favorites.edit();
     }
 
-    public static boolean isStarShown(FileListItem fileListItem) {
+    public boolean isStarShown(FileListItem fileListItem) {
         if (fileListItem.isDirectory())
             return false;
         return true;
