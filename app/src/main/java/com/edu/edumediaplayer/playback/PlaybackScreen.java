@@ -53,6 +53,7 @@ public class PlaybackScreen extends Fragment {
 
         if (mediaPlayer!=null) {
             mediaPlayer.stop();
+            mediaPlayer.release();
         }
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
