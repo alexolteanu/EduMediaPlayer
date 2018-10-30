@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.edu.edumediaplayer.FavoritesManager;
 import com.edu.edumediaplayer.R;
 
 import java.io.IOException;
@@ -19,6 +21,9 @@ public class PlaybackScreen extends Fragment {
 
     MediaPlayer mediaPlayer;
     boolean playing;
+    private FavoritesManager favmgr;
+    private ImageView star;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +46,9 @@ public class PlaybackScreen extends Fragment {
             }
         });
 
+        favmgr = new FavoritesManager(getActivity());
+        star = rootView.findViewById(R.id.star);
+
         return rootView;
     }
 
@@ -48,6 +56,7 @@ public class PlaybackScreen extends Fragment {
         SongDetailsExtractor extractor = new SongDetailsExtractor(path);
         ((TextView)(getActivity().findViewById(R.id.artist))).setText(extractor.getArtist());
         ((TextView)(getActivity().findViewById(R.id.title))).setText(extractor.getTitle());
+        star.setImageResource(favmgr.isFavorite(path)?android.R.drawable.star_big_on:android.R.drawable.star_big_off);
 
         playing = true;
 
