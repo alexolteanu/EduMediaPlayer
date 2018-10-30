@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.edu.edumediaplayer.FavoritesManager;
+import com.edu.edumediaplayer.MainActivity;
 import com.edu.edumediaplayer.R;
 
 import java.io.IOException;
@@ -52,11 +53,24 @@ public class PlaybackScreen extends Fragment {
         return rootView;
     }
 
-    public void playSong(String path) {
+    public void playSong(final String path) {
         SongDetailsExtractor extractor = new SongDetailsExtractor(path);
         ((TextView)(getActivity().findViewById(R.id.artist))).setText(extractor.getArtist());
         ((TextView)(getActivity().findViewById(R.id.title))).setText(extractor.getTitle());
         star.setImageResource(favmgr.isFavorite(path)?android.R.drawable.star_big_on:android.R.drawable.star_big_off);
+        star.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (favmgr.isFavorite(path)) {
+                    favmgr.removeFavorite(path);
+                    star.setImageResource(android.R.drawable.star_big_off);
+                } else {
+                    favmgr.setFavorite(path);
+                    star.setImageResource(android.R.drawable.star_big_on);
+                }
+                ((MainActivity)getActivity()).refreshFileList();
+            }
+        });
 
         playing = true;
 

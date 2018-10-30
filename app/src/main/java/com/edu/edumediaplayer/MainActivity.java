@@ -39,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         playbackScreen.playSong(path);
     }
 
+    public void refreshFileList() {
+        fileSelectionScreen.refreshFileList();
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {

@@ -122,6 +122,10 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
         return selection;
     }
 
+    public void refreshFileList() {
+        updateFileList(crtPath);
+    }
+
 
     private class FileToListTransformer{
         private List<FileListItem> transform(File[] files) {
