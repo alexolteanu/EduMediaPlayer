@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.edu.edumediaplayer.FavoritesManager;
 import com.edu.edumediaplayer.R;
 
 import java.io.File;
@@ -28,6 +30,7 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
     private final FileSystemReader reader;
     private FileListItem selection;
     private String crtPath;
+    private final FavoritesManager favmgr;
 
 
     public FileListAdapter(Activity activity) {
@@ -36,6 +39,7 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
 
         transformer = new FileToListTransformer();
         reader = new FileSystemReader(activity);
+        favmgr = new FavoritesManager(activity);
 
         startWithHomeFolder();
     }
@@ -45,7 +49,7 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_item, parent, false);
@@ -57,6 +61,23 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
 
         rowView.setBackgroundColor(context.getResources().getColor(values.get(position).getColor()));
 
+        final ImageView star = rowView.findViewById(R.id.star);
+        star.setVisibility(favmgr.isStarShown(values.get(position))?View.VISIBLE:View.INVISIBLE);
+        star.setImageResource(favmgr.isFavorite(values.get(position).getPath())?android.R.drawable.star_big_on:android.R.drawable.star_big_off);
+
+        star.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String songPath = values.get(position).getPath();
+                if (favmgr.isFavorite(songPath)) {
+                    favmgr.removeFavorite(songPath);
+                    star.setImageResource(android.R.drawable.star_big_off);
+                } else {
+                    favmgr.setFavorite(songPath);
+                    star.setImageResource(android.R.drawable.star_big_on);
+                }
+            }
+        });
         return rowView;
     }
 
@@ -99,6 +120,10 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
 
     public FileListItem getSelection() {
         return selection;
+    }
+
+    public void refreshFileList() {
+        updateFileList(crtPath);
     }
 
 

@@ -38,4 +38,9 @@ public class FileSelectionScreen extends ListFragment {
         if (!fileListAdapter.itemClicked(item))
             ((MainActivity)getActivity()).playSong(item.getPath());
     }
+
+    public void refreshFileList() {
+        if (fileListAdapter!=null)
+            fileListAdapter.refreshFileList();
+    }
 }
