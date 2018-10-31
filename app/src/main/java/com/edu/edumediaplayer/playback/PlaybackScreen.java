@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class PlaybackScreen extends Fragment {
     boolean playing;
     private FavoritesManager favmgr;
     private ImageView star;
+    private Handler myHandler;
 
 
     @Override
@@ -99,6 +101,7 @@ public class PlaybackScreen extends Fragment {
         if (mediaPlayer!=null) {
             mediaPlayer.stop();
             mediaPlayer.release();
+            myHandler.removeCallbacksAndMessages(null);
         }
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -111,7 +114,7 @@ public class PlaybackScreen extends Fragment {
         mediaPlayer.start();
 
         final TextView time = getActivity().findViewById(R.id.time);
-        final Handler myHandler = new Handler(Looper.getMainLooper());
+        myHandler = new Handler(Looper.getMainLooper());
         myHandler.postDelayed(new Runnable() {
             public void run() {
                 int crtTime = mediaPlayer.getCurrentPosition();
@@ -124,7 +127,8 @@ public class PlaybackScreen extends Fragment {
                         TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) finalTime))
                 ));
-                myHandler.postDelayed(this, 500);
+                if (mediaPlayer.isPlaying())
+                    myHandler.postDelayed(this, 500);
             }
         },500);
     }
