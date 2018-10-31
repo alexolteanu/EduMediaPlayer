@@ -47,6 +47,25 @@ public class PlaybackScreen extends Fragment {
             }
         });
 
+        final ImageButton fwdbtn = rootView.findViewById(R.id.fwd_btn);
+        fwdbtn.setOnClickListener(new View.OnClickListener()   {
+            public void onClick(View v)  {
+                int crtTime = mediaPlayer.getCurrentPosition();
+                int duration = mediaPlayer.getDuration();
+                if (duration - crtTime > 15000)
+                    mediaPlayer.seekTo(crtTime+15000);
+            }
+        });
+
+        final ImageButton bwdbtn = rootView.findViewById(R.id.bwd_btn);
+        bwdbtn.setOnClickListener(new View.OnClickListener()   {
+            public void onClick(View v)  {
+                int crtTime = mediaPlayer.getCurrentPosition();
+                if (crtTime > 15000)
+                    mediaPlayer.seekTo(crtTime-15000);
+            }
+        });
+
         favmgr = new FavoritesManager(getActivity());
         star = rootView.findViewById(R.id.star);
 
