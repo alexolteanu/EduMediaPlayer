@@ -4,6 +4,8 @@ import android.media.AudioManager;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.edu.edumediaplayer.MainActivity;
 import com.edu.edumediaplayer.R;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class PlaybackScreen extends Fragment {
 
@@ -106,5 +109,23 @@ public class PlaybackScreen extends Fragment {
             e.printStackTrace();
         }
         mediaPlayer.start();
+
+        final TextView time = getActivity().findViewById(R.id.time);
+        final Handler myHandler = new Handler(Looper.getMainLooper());
+        myHandler.postDelayed(new Runnable() {
+            public void run() {
+                int crtTime = mediaPlayer.getCurrentPosition();
+                int finalTime = mediaPlayer.getDuration();
+                time.setText(String.format("%02d:%02d / %02d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes((long) crtTime),
+                        TimeUnit.MILLISECONDS.toSeconds((long) crtTime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) crtTime)),
+                        TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
+                        TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) finalTime))
+                ));
+                myHandler.postDelayed(this, 500);
+            }
+        },500);
     }
 }
