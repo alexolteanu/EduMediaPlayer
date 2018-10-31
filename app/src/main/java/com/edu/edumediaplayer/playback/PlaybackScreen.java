@@ -4,7 +4,10 @@ import android.media.AudioManager;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import com.edu.edumediaplayer.MainActivity;
 import com.edu.edumediaplayer.R;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class PlaybackScreen extends Fragment {
 
@@ -24,6 +28,8 @@ public class PlaybackScreen extends Fragment {
     boolean playing;
     private FavoritesManager favmgr;
     private ImageView star;
+    private Handler myHandler;
+    private final int TIMESPAN = 15000;
 
 
     @Override
@@ -44,6 +50,25 @@ public class PlaybackScreen extends Fragment {
                     if (mediaPlayer!=null) mediaPlayer.start();
                     playing = true;
                 }
+            }
+        });
+
+        final ImageButton fwdbtn = rootView.findViewById(R.id.fwd_btn);
+        fwdbtn.setOnClickListener(new View.OnClickListener()   {
+            public void onClick(View v)  {
+                int crtTime = mediaPlayer.getCurrentPosition();
+                int duration = mediaPlayer.getDuration();
+                if (duration - crtTime > TIMESPAN)
+                    mediaPlayer.seekTo(crtTime+TIMESPAN);
+            }
+        });
+
+        final ImageButton bwdbtn = rootView.findViewById(R.id.bwd_btn);
+        bwdbtn.setOnClickListener(new View.OnClickListener()   {
+            public void onClick(View v)  {
+                int crtTime = mediaPlayer.getCurrentPosition();
+                if (crtTime > TIMESPAN)
+                    mediaPlayer.seekTo(crtTime-TIMESPAN);
             }
         });
 
@@ -77,6 +102,7 @@ public class PlaybackScreen extends Fragment {
         if (mediaPlayer!=null) {
             mediaPlayer.stop();
             mediaPlayer.release();
+            myHandler.removeCallbacksAndMessages(null);
         }
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -87,5 +113,24 @@ public class PlaybackScreen extends Fragment {
             e.printStackTrace();
         }
         mediaPlayer.start();
+
+        final TextView time = getActivity().findViewById(R.id.time);
+        myHandler = new Handler(Looper.getMainLooper());
+        myHandler.postDelayed(new Runnable() {
+            public void run() {
+                int crtTime = mediaPlayer.getCurrentPosition();
+                int finalTime = mediaPlayer.getDuration();
+                time.setText(String.format("%02d:%02d / %02d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes((long) crtTime),
+                        TimeUnit.MILLISECONDS.toSeconds((long) crtTime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) crtTime)),
+                        TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
+                        TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) finalTime))
+                ));
+                if (mediaPlayer.isPlaying())
+                    myHandler.postDelayed(this, 500);
+            }
+        },500);
     }
 }
