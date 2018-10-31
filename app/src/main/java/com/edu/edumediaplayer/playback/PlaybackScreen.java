@@ -29,6 +29,7 @@ public class PlaybackScreen extends Fragment {
     private FavoritesManager favmgr;
     private ImageView star;
     private Handler myHandler;
+    private final int TIMESPAN = 15000;
 
 
     @Override
@@ -57,8 +58,8 @@ public class PlaybackScreen extends Fragment {
             public void onClick(View v)  {
                 int crtTime = mediaPlayer.getCurrentPosition();
                 int duration = mediaPlayer.getDuration();
-                if (duration - crtTime > 15000)
-                    mediaPlayer.seekTo(crtTime+15000);
+                if (duration - crtTime > TIMESPAN)
+                    mediaPlayer.seekTo(crtTime+TIMESPAN);
             }
         });
 
@@ -66,8 +67,8 @@ public class PlaybackScreen extends Fragment {
         bwdbtn.setOnClickListener(new View.OnClickListener()   {
             public void onClick(View v)  {
                 int crtTime = mediaPlayer.getCurrentPosition();
-                if (crtTime > 15000)
-                    mediaPlayer.seekTo(crtTime-15000);
+                if (crtTime > TIMESPAN)
+                    mediaPlayer.seekTo(crtTime-TIMESPAN);
             }
         });
 
