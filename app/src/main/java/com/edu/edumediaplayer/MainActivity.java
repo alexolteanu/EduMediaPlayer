@@ -1,12 +1,16 @@
 package com.edu.edumediaplayer;
 
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
+import com.edu.edumediaplayer.fileselection.AssetImporter;
 import com.edu.edumediaplayer.fileselection.FileSelectionScreen;
 import com.edu.edumediaplayer.playback.PlaybackScreen;
 
@@ -63,5 +67,22 @@ public class MainActivity extends AppCompatActivity {
             // Show 2 total pages.
             return 2;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getApplicationContext(), "Permission granted", Toast.LENGTH_SHORT).show();
+            onPermissionGranted();
+        } else {
+            Toast.makeText(getApplicationContext(), "Permission not granted. You will not be able to use the application", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void onPermissionGranted() {
+        AssetImporter asstImp = new AssetImporter(this);
+        asstImp.copyAssets("music");
+        refreshFileList();
     }
 }
