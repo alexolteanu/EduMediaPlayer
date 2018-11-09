@@ -2,6 +2,7 @@ package com.edu.edumediaplayer.fileselection;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,6 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
         reader = new FileSystemReader(activity);
         favmgr = new FavoritesManager(activity);
 
-        reader.cacheMp3sOnDevice();
         startWithHomeFolder();
     }
 
@@ -104,6 +104,11 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
     }
 
     private void updateFileList(String newPath) {
+        try {
+            reader.cacheMp3sOnDevice();
+        } catch(SecurityException se) {
+            Log.d("Emp", se.getMessage());
+        }
         crtPath = newPath;
         values = transformer.transform(reader.getFiles(crtPath));
         if (!newPath.equals(ROOT)) {
