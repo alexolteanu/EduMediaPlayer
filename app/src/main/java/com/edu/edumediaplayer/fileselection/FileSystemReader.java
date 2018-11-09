@@ -10,7 +10,10 @@ import android.webkit.MimeTypeMap;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,12 +30,20 @@ public class FileSystemReader {
     }
 
     public File[] getFiles(String path) {
-        File[] files = new File(path).listFiles(new FileFilter() {
-            public boolean accept(File file) {
-                return file.isDirectory() || file.getName().toLowerCase().endsWith(".mp3");
+        List<File> files = new ArrayList<>();
+        String[] filePaths = new String[0];
+        if (mp3sOnDevice!=null) {
+            try {
+                filePaths = fsTree.getFiles(new File(path).getCanonicalFile().getPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+                filePaths = fsTree.getRootFiles();
             }
-        });
-        return files;
+        }
+        for (String filePath:filePaths) {
+            files.add(new File(path+"/"+filePath));
+        }
+        return files.toArray(new File[files.size()]);
     }
 
     public void cacheMp3sOnDevice() {
