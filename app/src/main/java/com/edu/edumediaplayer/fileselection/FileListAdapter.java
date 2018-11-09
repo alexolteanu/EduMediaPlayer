@@ -41,6 +41,7 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
         reader = new FileSystemReader(activity);
         favmgr = new FavoritesManager(activity);
 
+        reader.cacheMp3sOnDevice();
         startWithHomeFolder();
     }
 
