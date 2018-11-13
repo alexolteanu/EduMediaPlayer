@@ -1,13 +1,11 @@
 package com.edu.edumediaplayer.playback;
 
 import android.media.AudioManager;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +16,12 @@ import android.widget.TextView;
 import com.edu.edumediaplayer.FavoritesManager;
 import com.edu.edumediaplayer.MainActivity;
 import com.edu.edumediaplayer.R;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarEntry;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class PlaybackScreen extends Fragment {
@@ -74,6 +76,14 @@ public class PlaybackScreen extends Fragment {
 
         favmgr = new FavoritesManager(getActivity());
         star = rootView.findViewById(R.id.star);
+
+        BarChart barChart = (BarChart) rootView.findViewById(R.id.chart);
+        Visualizer vis = new Visualizer(barChart, getActivity());
+        List<BarEntry> entries = new ArrayList <>();
+        for (int i=0; i<240; i++) {
+            entries.add(new BarEntry(i, Math.round(Math.random()*500)));
+        }
+        vis.setData(entries);
 
         return rootView;
     }
