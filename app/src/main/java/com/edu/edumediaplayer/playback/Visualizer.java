@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Visualizer {
@@ -21,11 +22,13 @@ public class Visualizer {
     private Activity activity;
 
 
-    public Visualizer(BarChart barChart, Activity activity) {
+    public Visualizer(BarChart topBarChart, BarChart bottomBarChart, Activity activity) {
 
         this.activity = activity;
-        leftChannelChart = barChart;
+        leftChannelChart = topBarChart;
+        rightChannelChart = bottomBarChart;
         stripVisuals(leftChannelChart);
+        stripVisuals(rightChannelChart);
 
     }
 
@@ -52,11 +55,23 @@ public class Visualizer {
         legend.setEnabled(false);
     }
 
-    public void setData(List<BarEntry> entries) {
-        BarDataSet dataset = new BarDataSet(entries, "# of Calls");
+    public void setData(List<Integer> leftChannel, List<Integer> rightChannel) {
+        setData(leftChannelChart, leftChannel);
+        List<Integer> oppVals = new ArrayList<>();
+        for (Integer a:rightChannel)
+            oppVals.add(a*-1);
+        setData(rightChannelChart, oppVals);
+    }
+    private void setData(BarChart chart, List<Integer> vals) {
+        List<BarEntry> entries = new ArrayList<>();
+        int i = 0;
+        for (Integer val:vals) {
+            entries.add(new BarEntry(i++, val));
+        }
+        BarDataSet dataset = new BarDataSet(entries, "");
         dataset.setColor(activity.getResources().getColor(R.color.colorPrimaryDark));
         BarData data = new BarData(dataset);
         data.setBarWidth(1f);
-        leftChannelChart.setData(data);
+        chart.setData(data);
     }
 }

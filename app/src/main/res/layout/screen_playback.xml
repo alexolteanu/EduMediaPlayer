@@ -54,15 +54,37 @@
         tools:layout_constraintTop_creator="1" />
 
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/chart"
+        android:id="@+id/topChart"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="179dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/constraintLayout">
+    </com.github.mikephil.charting.charts.BarChart>
 
+    <ImageView
+        android:id="@+id/progressBar"
+        android:layout_width="100dp"
+        android:layout_height="4dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginTop="231dp"
+        android:layout_marginLeft="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/bottomChart"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="216dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout">
     </com.github.mikephil.charting.charts.BarChart>
     
     <ImageButton

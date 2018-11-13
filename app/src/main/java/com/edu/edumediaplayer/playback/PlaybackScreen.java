@@ -77,13 +77,14 @@ public class PlaybackScreen extends Fragment {
         favmgr = new FavoritesManager(getActivity());
         star = rootView.findViewById(R.id.star);
 
-        BarChart barChart = (BarChart) rootView.findViewById(R.id.chart);
-        Visualizer vis = new Visualizer(barChart, getActivity());
-        List<BarEntry> entries = new ArrayList <>();
+        BarChart topBarChart = (BarChart) rootView.findViewById(R.id.topChart);
+        BarChart bottomBarChart = (BarChart) rootView.findViewById(R.id.bottomChart);
+        Visualizer vis = new Visualizer(topBarChart, bottomBarChart, getActivity());
+        List<Integer> entries = new ArrayList <>();
         for (int i=0; i<240; i++) {
-            entries.add(new BarEntry(i, Math.round(Math.random()*500)));
+            entries.add((int)Math.round(Math.random()*500));
         }
-        vis.setData(entries);
+        vis.setData(entries,entries);
 
         return rootView;
     }
