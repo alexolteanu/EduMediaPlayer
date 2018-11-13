@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class PlaybackScreen extends Fragment {
 
     MediaPlayer mediaPlayer;
+    Visualizer vis;
     boolean playing;
     private FavoritesManager favmgr;
     private ImageView star;
@@ -79,7 +80,8 @@ public class PlaybackScreen extends Fragment {
 
         BarChart topBarChart = (BarChart) rootView.findViewById(R.id.topChart);
         BarChart bottomBarChart = (BarChart) rootView.findViewById(R.id.bottomChart);
-        Visualizer vis = new Visualizer(topBarChart, bottomBarChart, getActivity());
+        ImageView progressBar = (ImageView) rootView.findViewById(R.id.progressBar);
+        vis = new Visualizer(topBarChart, bottomBarChart, progressBar, getActivity());
         List<Integer> entries = new ArrayList <>();
         for (int i=0; i<240; i++) {
             entries.add((int)Math.round(Math.random()*500));
@@ -139,6 +141,8 @@ public class PlaybackScreen extends Fragment {
                         TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) finalTime))
                 ));
+                float perc = crtTime * 1.f / finalTime;
+                vis.updateProgress(perc);
                 if (mediaPlayer.isPlaying())
                     myHandler.postDelayed(this, 500);
             }

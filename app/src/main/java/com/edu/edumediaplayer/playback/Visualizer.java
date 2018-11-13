@@ -1,6 +1,9 @@
 package com.edu.edumediaplayer.playback;
 
 import android.app.Activity;
+import android.graphics.Point;
+import android.view.Display;
+import android.widget.ImageView;
 
 import com.edu.edumediaplayer.R;
 import com.github.mikephil.charting.charts.BarChart;
@@ -19,17 +22,23 @@ public class Visualizer {
 
     private BarChart leftChannelChart;
     private BarChart rightChannelChart;
+    private ImageView progressBar;
     private Activity activity;
+    private float screenWidth;
 
 
-    public Visualizer(BarChart topBarChart, BarChart bottomBarChart, Activity activity) {
-
+    public Visualizer(BarChart topBarChart, BarChart bottomBarChart, ImageView progressBar, Activity activity) {
         this.activity = activity;
+        this.progressBar = progressBar;
         leftChannelChart = topBarChart;
         rightChannelChart = bottomBarChart;
         stripVisuals(leftChannelChart);
         stripVisuals(rightChannelChart);
 
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        screenWidth = size.x;
     }
 
     private void stripVisuals(BarChart barChart) {
@@ -73,5 +82,13 @@ public class Visualizer {
         BarData data = new BarData(dataset);
         data.setBarWidth(1f);
         chart.setData(data);
+    }
+
+    public void updateProgress(float perc) {
+        int width = (int)(perc*screenWidth);
+        if (width<1)
+            width = 1;
+        progressBar.getLayoutParams().width = width;
+        progressBar.requestLayout();
     }
 }
