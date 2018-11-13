@@ -50,7 +50,10 @@ public class PlaybackScreen extends Fragment {
                     playing = false;
                 } else {
                     playbtn.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_pause));
-                    if (mediaPlayer!=null) mediaPlayer.start();
+                    if (mediaPlayer!=null) {
+                        mediaPlayer.start();
+                        startTimer();
+                    }
                     playing = true;
                 }
             }
@@ -126,7 +129,10 @@ public class PlaybackScreen extends Fragment {
             e.printStackTrace();
         }
         mediaPlayer.start();
+        startTimer();
+    }
 
+    public void startTimer() {
         final TextView time = getActivity().findViewById(R.id.time);
         myHandler = new Handler(Looper.getMainLooper());
         myHandler.postDelayed(new Runnable() {
