@@ -1,13 +1,11 @@
 package com.edu.edumediaplayer.playback;
 
 import android.media.AudioManager;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +16,18 @@ import android.widget.TextView;
 import com.edu.edumediaplayer.FavoritesManager;
 import com.edu.edumediaplayer.MainActivity;
 import com.edu.edumediaplayer.R;
+import com.github.mikephil.charting.charts.BarChart;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class PlaybackScreen extends Fragment {
 
     MediaPlayer mediaPlayer;
+    Visualizer vis;
+    DecompressionThread dthread;
     boolean playing;
     private FavoritesManager favmgr;
     private ImageView star;
@@ -47,7 +50,10 @@ public class PlaybackScreen extends Fragment {
                     playing = false;
                 } else {
                     playbtn.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_pause));
-                    if (mediaPlayer!=null) mediaPlayer.start();
+                    if (mediaPlayer!=null) {
+                        mediaPlayer.start();
+                        startTimer();
+                    }
                     playing = true;
                 }
             }
@@ -75,6 +81,11 @@ public class PlaybackScreen extends Fragment {
         favmgr = new FavoritesManager(getActivity());
         star = rootView.findViewById(R.id.star);
 
+        BarChart topBarChart = (BarChart) rootView.findViewById(R.id.topChart);
+        BarChart bottomBarChart = (BarChart) rootView.findViewById(R.id.bottomChart);
+        ImageView progressBar = (ImageView) rootView.findViewById(R.id.progressBar);
+        vis = new Visualizer(topBarChart, bottomBarChart, progressBar, getActivity());
+
         return rootView;
     }
 
@@ -98,6 +109,9 @@ public class PlaybackScreen extends Fragment {
         });
 
         playing = true;
+        if (dthread!=null) dthread.setNeeded(false);
+        dthread = new DecompressionThread(path, vis);
+        dthread.start();
 
         if (mediaPlayer!=null) {
             mediaPlayer.stop();
@@ -113,7 +127,10 @@ public class PlaybackScreen extends Fragment {
             e.printStackTrace();
         }
         mediaPlayer.start();
+        startTimer();
+    }
 
+    public void startTimer() {
         final TextView time = getActivity().findViewById(R.id.time);
         myHandler = new Handler(Looper.getMainLooper());
         myHandler.postDelayed(new Runnable() {
@@ -128,6 +145,8 @@ public class PlaybackScreen extends Fragment {
                         TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) finalTime))
                 ));
+                float perc = crtTime * 1.f / finalTime;
+                vis.updateProgress(perc);
                 if (mediaPlayer.isPlaying())
                     myHandler.postDelayed(this, 500);
             }

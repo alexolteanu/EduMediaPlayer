@@ -16,6 +16,10 @@ import com.edu.edumediaplayer.playback.PlaybackScreen;
 
 public class MainActivity extends AppCompatActivity {
 
+    static {
+        System.loadLibrary("mp3decoder");
+    }
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private FileSelectionScreen fileSelectionScreen;

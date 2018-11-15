@@ -23,7 +23,7 @@
         android:id="@+id/artist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="110dp"
         android:text="Artist"
         android:textSize="20dp"
         android:textColor="@color/colorPrimaryDark"
@@ -40,7 +40,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="140dp"
         android:text="Title"
         android:textSize="20dp"
         android:textStyle="bold"
@@ -53,13 +53,47 @@
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
 
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/topChart"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="179dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout">
+    </com.github.mikephil.charting.charts.BarChart>
+
+    <ImageView
+        android:id="@+id/progressBar"
+        android:layout_width="100dp"
+        android:layout_height="4dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginTop="231dp"
+        android:layout_marginLeft="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/bottomChart"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="216dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout">
+    </com.github.mikephil.charting.charts.BarChart>
+    
     <ImageButton
         android:id="@+id/play_pause_btn"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@android:drawable/ic_media_pause"
         android:background="@color/colorPrimary"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +105,7 @@
         android:layout_height="40dp"
         android:src="@android:drawable/ic_media_rew"
         android:background="@color/colorPrimary"
-        android:layout_marginTop="270dp"
+        android:layout_marginTop="320dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +117,7 @@
         android:layout_height="40dp"
         android:src="@android:drawable/ic_media_ff"
         android:background="@color/colorPrimary"
-        android:layout_marginTop="270dp"
+        android:layout_marginTop="320dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +127,7 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="370dp"
+        android:layout_marginTop="420dp"
         android:text="00:00 / 00:00"
         android:textSize="14dp"
         android:textColor="@color/colorPrimary"
