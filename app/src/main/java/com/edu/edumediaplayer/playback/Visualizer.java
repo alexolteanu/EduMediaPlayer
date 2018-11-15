@@ -85,7 +85,7 @@ public class Visualizer {
     }
 
     public void updateProgress(float perc) {
-        int width = (int)(perc*screenWidth);
+        int width = (int)(perc*(screenWidth-90));
         if (width<1)
             width = 1;
         progressBar.getLayoutParams().width = width;
