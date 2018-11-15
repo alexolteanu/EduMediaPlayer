@@ -17,7 +17,6 @@ import com.edu.edumediaplayer.FavoritesManager;
 import com.edu.edumediaplayer.MainActivity;
 import com.edu.edumediaplayer.R;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.BarEntry;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +27,7 @@ public class PlaybackScreen extends Fragment {
 
     MediaPlayer mediaPlayer;
     Visualizer vis;
+    DecompressionThread dthread;
     boolean playing;
     private FavoritesManager favmgr;
     private ImageView star;
@@ -114,6 +114,9 @@ public class PlaybackScreen extends Fragment {
         });
 
         playing = true;
+        if (dthread!=null) dthread.setNeeded(false);
+        dthread = new DecompressionThread(path, vis);
+        dthread.start();
 
         if (mediaPlayer!=null) {
             mediaPlayer.stop();

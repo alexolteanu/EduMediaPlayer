@@ -91,4 +91,7 @@ public class Visualizer {
         progressBar.getLayoutParams().width = width;
         progressBar.requestLayout();
     }
+
+    public void feed(short[] newRawData) {
+    }
 }
