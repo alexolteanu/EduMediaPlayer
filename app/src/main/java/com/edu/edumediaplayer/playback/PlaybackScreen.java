@@ -85,11 +85,6 @@ public class PlaybackScreen extends Fragment {
         BarChart bottomBarChart = (BarChart) rootView.findViewById(R.id.bottomChart);
         ImageView progressBar = (ImageView) rootView.findViewById(R.id.progressBar);
         vis = new Visualizer(topBarChart, bottomBarChart, progressBar, getActivity());
-        List<Integer> entries = new ArrayList <>();
-        for (int i=0; i<240; i++) {
-            entries.add((int)Math.round(Math.random()*500));
-        }
-        vis.setData(entries,entries);
 
         return rootView;
     }

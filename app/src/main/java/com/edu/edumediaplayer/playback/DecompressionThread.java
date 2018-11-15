@@ -22,6 +22,7 @@ public class DecompressionThread extends Thread {
     public void run() {
         needed = true;
         songRead = false;
+        vis.reset();
         try {
             setup();
             int totalRawLength = 0;
@@ -56,6 +57,7 @@ public class DecompressionThread extends Thread {
                     throw new Surface.OutOfResourcesException();
             }
         }
+        vis.setBitrate(info.getRate());
     }
 
     public void setNeeded(Boolean val) {

@@ -25,6 +25,10 @@ public class Visualizer {
     private ImageView progressBar;
     private Activity activity;
     private float screenWidth;
+    private List<Integer> leftChannelData = new ArrayList<>();
+    private List<Integer> rightChannelData = new ArrayList<>();
+    private int leftSum, rightSum, count;
+    private int bitrate = 44100;
 
 
     public Visualizer(BarChart topBarChart, BarChart bottomBarChart, ImageView progressBar, Activity activity) {
@@ -64,14 +68,18 @@ public class Visualizer {
         legend.setEnabled(false);
     }
 
-    public void setData(List<Integer> leftChannel, List<Integer> rightChannel) {
-        setData(leftChannelChart, leftChannel);
+    public void setBitrate(int bitrate){
+        this.bitrate = bitrate;
+    }
+
+    public void setData() {
+        setData(leftChannelChart, leftChannelData);
         List<Integer> oppVals = new ArrayList<>();
-        for (Integer a:rightChannel)
+        for (Integer a:rightChannelData)
             oppVals.add(a*-1);
         setData(rightChannelChart, oppVals);
     }
-    private void setData(BarChart chart, List<Integer> vals) {
+    private void setData(final BarChart chart, List<Integer> vals) {
         List<BarEntry> entries = new ArrayList<>();
         int i = 0;
         for (Integer val:vals) {
@@ -82,6 +90,13 @@ public class Visualizer {
         BarData data = new BarData(dataset);
         data.setBarWidth(1f);
         chart.setData(data);
+        chart.notifyDataSetChanged();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                chart.invalidate();
+            }
+        });
     }
 
     public void updateProgress(float perc) {
@@ -93,5 +108,24 @@ public class Visualizer {
     }
 
     public void feed(short[] newRawData) {
+        for (int i=0; i<newRawData.length; i+=2){
+            leftSum+=Math.abs(newRawData[i]);
+            rightSum+=Math.abs(newRawData[i+1]);
+            count++;
+            if (count == bitrate) {
+                leftChannelData.add(leftSum/count);
+                rightChannelData.add(rightSum/count);
+                if (leftChannelData.size()%10==0) setData();
+                leftSum = 0; rightSum = 0; count = 0;
+            }
+        }
+    }
+
+    public void reset() {
+        leftChannelData = new ArrayList<>();
+        rightChannelData = new ArrayList<>();
+        leftSum = 0;
+        rightSum = 0;
+        count = 0;
     }
 }
