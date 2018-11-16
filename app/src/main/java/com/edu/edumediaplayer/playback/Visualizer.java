@@ -46,6 +46,7 @@ public class Visualizer {
     }
 
     private void stripVisuals(BarChart barChart) {
+        if (barChart==null) return;
         barChart.setBackgroundColor(activity.getResources().getColor(android.R.color.transparent));
         Description empty = new Description();
         empty.setText("");
@@ -127,5 +128,12 @@ public class Visualizer {
         leftSum = 0;
         rightSum = 0;
         count = 0;
+    }
+
+    public List<Integer> getLeftChannelData() { // used for testing - sign of bad design... see SRP
+        return leftChannelData;
+    }
+    public List<Integer> getRightChannelData() { // used for testing - sign of bad design... see SRP
+        return rightChannelData;
     }
 }
