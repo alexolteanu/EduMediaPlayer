@@ -1,5 +1,6 @@
 package com.edu.edumediaplayer.playback;
 
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.edu.edumediaplayer.FavoritesManager;
 import com.edu.edumediaplayer.MainActivity;
 import com.edu.edumediaplayer.R;
+import com.edu.edumediaplayer.shareOnFacebook.Screenshot;
 import com.github.mikephil.charting.charts.BarChart;
 
 import java.io.IOException;
@@ -92,8 +94,13 @@ public class PlaybackScreen extends Fragment {
         shareButton = rootView.findViewById(R.id.shareButton);
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Log.i("Share on Facebook", "so far, so good");
+            public void onClick(View view) {
+                Bitmap screenshot = Screenshot.takeScreenshot(view.getRootView());
+                String filename = "eduMediaPlayerScreenshot";
+
+                star.setImageBitmap(screenshot); // de eliminat asta
+                Screenshot.storeScreenshot(screenshot, filename);
+                Log.i("Taking a screenshot", "so far, so good");
             }
         });
 
