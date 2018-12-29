@@ -4,6 +4,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="assetCopyFailed">Asset Copy Failed</string>
     <string name="assetCopySuccessful">Successfully copied %d files in your home folder</string>
+    <string name="share_on_facebook">share on Facebook</string>
 
     <string-array name="Dirs">
         <item>dir1</item>

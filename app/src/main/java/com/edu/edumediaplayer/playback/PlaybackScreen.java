@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class PlaybackScreen extends Fragment {
     boolean playing;
     private FavoritesManager favmgr;
     private ImageView star;
+    private ImageButton shareButton;
     private Handler myHandler;
     private final int TIMESPAN = 15000;
 
@@ -85,6 +87,15 @@ public class PlaybackScreen extends Fragment {
         BarChart bottomBarChart = (BarChart) rootView.findViewById(R.id.bottomChart);
         ImageView progressBar = (ImageView) rootView.findViewById(R.id.progressBar);
         vis = new Visualizer(topBarChart, bottomBarChart, progressBar, getActivity());
+
+        // get the share button
+        shareButton = rootView.findViewById(R.id.shareButton);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Share on Facebook", "so far, so good");
+            }
+        });
 
         return rootView;
     }
