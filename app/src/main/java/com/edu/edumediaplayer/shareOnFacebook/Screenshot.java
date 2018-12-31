@@ -1,9 +1,15 @@
 package com.edu.edumediaplayer.shareOnFacebook;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
+
+import com.edu.edumediaplayer.BuildConfig;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,7 +27,7 @@ public class Screenshot {
         return screenshot;
     }
 
-    public static void storeScreenshot(Bitmap screenshot, String filename) {
+    public static String storeScreenshot(Bitmap screenshot, String filename) {
         String path = Environment.getExternalStorageDirectory().toString() + "/" + filename;
         OutputStream out = null;
         File imageFile = new File(path);
@@ -42,6 +48,7 @@ public class Screenshot {
             try {
                 if (out != null) {
                     out.close();
+                    return imageFile.toString();
                 }
 
             } catch (Exception e) {
@@ -49,5 +56,17 @@ public class Screenshot {
             }
 
         }
+        return null;
+    }
+
+    public static Intent shareScreenshot(String sharePath, View view) {
+        File file = new File(sharePath);
+        Uri uri = FileProvider.getUriForFile(view.getContext(),
+                BuildConfig.APPLICATION_ID + ".provider", file);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/jpeg");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        return intent;
     }
 }

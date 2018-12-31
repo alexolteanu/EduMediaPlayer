@@ -1,8 +1,10 @@
 package com.edu.edumediaplayer.playback;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,6 +23,7 @@ import com.edu.edumediaplayer.R;
 import com.edu.edumediaplayer.shareOnFacebook.Screenshot;
 import com.github.mikephil.charting.charts.BarChart;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,10 +100,9 @@ public class PlaybackScreen extends Fragment {
             public void onClick(View view) {
                 Bitmap screenshot = Screenshot.takeScreenshot(view.getRootView());
                 String filename = "eduMediaPlayerScreenshot";
-
-                star.setImageBitmap(screenshot); // de eliminat asta
-                Screenshot.storeScreenshot(screenshot, filename);
-                Log.i("Taking a screenshot", "so far, so good");
+                String sharePath = Screenshot.storeScreenshot(screenshot, filename);
+                Intent intent = Screenshot.shareScreenshot(sharePath, view.getRootView());
+                startActivity(intent);
             }
         });
 
