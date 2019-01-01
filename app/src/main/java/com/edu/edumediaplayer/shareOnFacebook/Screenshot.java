@@ -29,23 +29,19 @@ public class Screenshot {
         return screenshot;
     }
 
-    public static String storeScreenshot(Bitmap bitmap, String filename) {
-
+    public static String storeScreenshot(Bitmap screenshot, String filename) {
         Long tsLong = System.currentTimeMillis() / 1000;
         String timeStamp = tsLong.toString();
 
         String path = Environment.getExternalStorageDirectory().toString() + "/" +
                 filename + timeStamp + ".jpg";
+        OutputStream out = null;
         File imageFile = new File(path);
 
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        FileOutputStream fo = null;
-
         try {
-            imageFile.createNewFile();
-            fo = new FileOutputStream(imageFile);
-            fo.write(bytes.toByteArray());
+            out = new FileOutputStream(imageFile);
+            screenshot.compress(Bitmap.CompressFormat.JPEG, 99, out);
+            out.flush();
 
         } catch (FileNotFoundException e) {
             Log.i("Exception:", "File not found.");
@@ -56,8 +52,8 @@ public class Screenshot {
         } finally {
 
             try {
-                if (fo != null) {
-                    fo.close();
+                if (out != null) {
+                    out.close();
                     return imageFile.toString();
                 }
 
