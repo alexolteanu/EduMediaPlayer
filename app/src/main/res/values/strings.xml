@@ -1,14 +1,4 @@
 <resources>
-    <string name="app_name">EduMediaPlayer</string>
+    <string name="app_name">FireStreaming</string>
     <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-    <string name="assetCopyFailed">Asset Copy Failed</string>
-    <string name="assetCopySuccessful">Successfully copied %d files in your home folder</string>
-
-    <string-array name="Dirs">
-        <item>dir1</item>
-        <item>dir2</item>
-        <item>dir3</item>
-        <item>file1.mp3</item>
-    </string-array>
 </resources>
